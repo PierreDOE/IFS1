@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
+import pandas as pd
 
 class Flutter:
     def __init__(self, params):
@@ -19,6 +20,7 @@ class Flutter:
         self.d = params["d"]  # m
         self.c = params["c"]  # m
         self.delta_b = params["delta_b"]  # m
+        self.U_test = 75 # m.s
 
         # Fréquences propres en torsion et flexion
         self.lambda_z = self.k_z / self.m
@@ -58,7 +60,7 @@ class Flutter:
     def vitesse_critique(self):
         """Determination de la vitesse critique en utilisant
           le determinant avec forçage"""
-        Uc = fsolve(self.determinant_avec_forcage, self.U / 2) # initialisation 
+        Uc = fsolve(self.determinant_avec_forcage, self.U / 2) # initialisation
         # de la vitesse au hasard (U/2)
         return Uc[0] # fsolve retourne les résultats sous forme de tableau numpy.
 
@@ -82,7 +84,9 @@ class Flutter:
                 frequences.append([0, 0])
 
         frequences = np.array(frequences)
-        plt.plot(vitesses, frequences[:, 0],linewidth = 3, label="")
+        print(frequences)
+        plt.plot(vitesses, frequences[:, 0],linewidth = 3, label="f z")
+        plt.plot(vitesses, frequences[:, 1],linewidth = 3, label="f a")
         plt.axvline(self.vitesse_critique(), color='r',linewidth = 2,
                      linestyle='--', label='Vitesse critique')
         plt.xlabel('Vitesse (m/s)')
@@ -92,16 +96,39 @@ class Flutter:
         plt.legend()
         plt.show()
 
+    def pulsations_avec_forcage(self, U):
+        """Fonction qui fournie les 4 pulsations du système forcé
+        Et les affiche sous forme de tableau"""
+        q = 0.5 * self.rho * U ** 2
+        r = (q * self.S * self.CL_alpha) / self.J0
+        s = (q * self.S * self.CL_alpha) / self.m
+
+        # Coefficients du polynôme caractéristique
+        A = 1 - (self.m * self.d ** 2) / self.J0
+        B = -(self.lambda_alpha + self.lambda_z) + r * (self.a - self.d)
+        C = self.lambda_z * (self.lambda_alpha - self.a * r)
+
+        # Résolution du polynôme caractéristique
+        coeffs = [A, B, C, -s, 0]  # Polynôme de degré 4
+        lambdas = np.roots(coeffs)  # Trouve les racines du polynôme
+
+        # Conversion des racines en pulsations complexes (ω = sqrt(λ))
+        pulsations = np.sqrt(lambdas)
+        print("test =",lambdas) # Trouve les racines du polynôme
+        data = {
+                "Pulsation (ω)": [f"ω{i+1}" for i in range(4)],
+                "Partie Réelle": np.real(pulsations),
+                "Partie Imaginaire": np.imag(pulsations)
+                }
+        df = pd.DataFrame(data)
+
+        print(f" Pulsations complexes pour U = {U} m/s :")
+        print(df)
+
     def solve(self):
         """Showing the results"""
         # flutter = Flutter()
         print("Racines sans forçage :", self.racines_sans_forcage())
         print("Vitesse critique :", self.vitesse_critique())
         self.tracer_frequences()
-
-
-# if __name__ == "__main__":
-#     flutter = Flutter()
-#     print("Racines sans forçage :", flutter.racines_sans_forcage())
-#     print("Vitesse critique :", flutter.vitesse_critique())
-#     flutter.tracer_frequences()
+        self.pulsations_avec_forcage(self.U)
