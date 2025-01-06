@@ -4,36 +4,25 @@
 Pierre DOERFLER, January 2025
 
 """
+import numpy as np
 
-import matplotlib.pyplot as plt
-from fsc.falknerskan import FalknerSkan
-from fsc.fsk_appli import FalknerSkanAppli
-# from fsc.fsk_appli import FalknerSkanAppli
-from toolbox.colored_messages import *
-
-par_fsk = dict(eta_max=5.9,
-               npt=201,
-               beta=-0.0,
-               method=1,
-               grid="geometric",
-               verbose=False,
-               plot=True
-               )
-
-s = FalknerSkan(par_fsk)
-s.solve()
-print("outputs: ", s.output)
-
-s = FalknerSkanAppli(dict(beta=(0, -0.50), npt_beta=3), par_fsk)
-s.beta_sweep()  # lancement du balayage
-s.save()       # sauvegarde dans un fichier outputs/output.out
-print(s)       # affichage d'un tableau
-
-# FalknerSkan.display_profiles()
-# set_info("normal end of execution")
-
-if __name__ == "__main__":
-    flutter = Flutter()
-    print("Racines sans forçage :", flutter.racines_sans_forcage())
-    print("Vitesse critique :", flutter.vitesse_critique())
-    flutter.tracer_frequences()
+class Data():
+    def __init__(self):
+        """
+        Initial parameters for Flutter()
+        """
+        self.params = dict(rho = 1,  # kg/m³
+                           rho_s = 600,  # kg/m³
+                           CL_alpha = 2 * np.pi,
+                           CmF = 0.01,
+                           alpha0 = np.radians(5),
+                           alphaL0 = np.radians(-3),
+                           k_alpha = 9e4, # N.m/rad
+                           k_z = 3e4, # N/m
+                           U = 120, # m/s
+                           J0 = 205,  # kg.m²
+                           a = 0.5,  # m
+                           m = 600,  # kg
+                           d = -0.2,  # m
+                           c = 2,  # m
+                           delta_b = 1)  # m
