@@ -92,7 +92,7 @@ class Flutter:
         plt.legend()
         plt.show()
 
-    def solve():
+    def solve(self):
         """Showing the results"""
         # flutter = Flutter()
         print("Racines sans forçage :", self.racines_sans_forcage())
