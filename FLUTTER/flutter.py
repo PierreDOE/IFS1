@@ -96,10 +96,10 @@ class Flutter:
 
     def solve():
         """Showing the results"""
-        flutter = Flutter()
-        print("Racines sans forçage :", flutter.racines_sans_forcage())
-        print("Vitesse critique :", flutter.vitesse_critique())
-        flutter.tracer_frequences()
+        # flutter = Flutter()
+        print("Racines sans forçage :", self.racines_sans_forcage())
+        print("Vitesse critique :", self.vitesse_critique())
+        self.tracer_frequences()
 
 
 # if __name__ == "__main__":
