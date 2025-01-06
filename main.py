@@ -12,4 +12,7 @@ import pandas as pd
 
 
 if __name__ == "__main__":
-    Flutter.solve()
+    D = Data()
+    D.params["rho"] = 3
+    F = Flutter(D.params)
+    F.solve()
