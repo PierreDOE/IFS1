@@ -58,11 +58,9 @@ class Flutter:
     def vitesse_critique(self):
         """Determination de la vitesse critique en utilisant
           le determinant avec forçage"""
-        def delta_nul(U):
-            return self.determinant_avec_forcage(U)
-
-        Uc = fsolve(delta_nul, self.U / 2)
-        return Uc[0]
+        Uc = fsolve(self.determinant_avec_forcage, self.U / 2) # initialisation 
+        # de la vitesse au hasard (U/2)
+        return Uc[0] # fsolve retourne les résultats sous forme de tableau numpy.
 
     def tracer_frequences(self):
         """Fonction de calcul des fréquences """
