@@ -4,7 +4,7 @@
 Pierre DOERFLER, January 2025
 
 """
-from Flutter.flutter import Flutter
+from FLUTTER.flutter import Flutter
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
