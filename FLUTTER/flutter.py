@@ -44,6 +44,19 @@ class Flutter:
         racines = np.roots(coeffs)
         return racines
 
+    def pulsation_sans_forçage(self):
+        roots = self.racines_sans_forcage()
+        print(f"pulsation pour \u03BB_1\n\u03C9_11={roots[0]}\t\u03C9_12={-roots[0]}")
+        print(f"pulsation pour \u03BB_2\n\u03C9_21={roots[1]}\t\u03C9_22={-roots[1]}")
+
+    def sans_forage(self):
+        _lambda = self.racines_sans_forcage()
+        line()
+        print(f"Racines sans forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
+        line()
+        self.pulsation_sans_forçage()
+        line()
+
     def determinant_avec_forcage(self, U):
         """ Calcul du déterminant avec forçage"""
         q = 0.5 * self.rho * U ** 2
@@ -128,7 +141,6 @@ class Flutter:
     def solve(self):
         """Showing the results"""
         # flutter = Flutter()
-        print("Racines sans forçage :", self.racines_sans_forcage())
+        self.racines_sans_forcage()
         print("Vitesse critique :", self.vitesse_critique())
         self.tracer_frequences()
-        self.pulsations_avec_forcage(self.U)
