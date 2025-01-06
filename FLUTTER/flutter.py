@@ -29,10 +29,12 @@ class Flutter:
         self.S = self.c * self.delta_b
 
     def determinant_sans_forcage(self, lambd):
+        """Calcul du déterminant sans forçage"""
         A = 1 - (self.m * self.d ** 2) / self.J0
         return A * lambd ** 2 - (self.lambda_alpha + self.lambda_z) * lambd + self.lambda_z * self.lambda_alpha
 
     def racines_sans_forcage(self):
+        """Calcul des racines du determinant sans forçage"""
         coeffs = [
             1 - (self.m * self.d ** 2) / self.J0,
             -(self.lambda_alpha + self.lambda_z),
@@ -42,6 +44,7 @@ class Flutter:
         return racines
 
     def determinant_avec_forcage(self, U):
+        """ Calcul du déterminant avec forçage"""
         q = 0.5 * self.rho * U ** 2
         r = (q * self.S * self.CL_alpha) / self.J0
         s = (q * self.S * self.CL_alpha) / self.m
@@ -54,6 +57,8 @@ class Flutter:
         return delta
 
     def vitesse_critique(self):
+        """Determination de la vitesse critique en utilisant
+          le determinant avec forçage"""
         def delta_nul(U):
             return self.determinant_avec_forcage(U)
 
@@ -61,6 +66,7 @@ class Flutter:
         return Uc[0]
 
     def tracer_frequences(self):
+        """Fonction de calcul des fréquences """
         vitesses = np.linspace(0, self.U, 100)
         frequences = []
 
@@ -89,8 +95,16 @@ class Flutter:
         plt.legend()
         plt.show()
 
-if __name__ == "__main__":
-    flutter = Flutter()
-    print("Racines sans forçage :", flutter.racines_sans_forcage())
-    print("Vitesse critique :", flutter.vitesse_critique())
-    flutter.tracer_frequences()
+    def solve():
+        """Showing the results"""
+        flutter = Flutter()
+        print("Racines sans forçage :", flutter.racines_sans_forcage())
+        print("Vitesse critique :", flutter.vitesse_critique())
+        flutter.tracer_frequences()
+
+
+# if __name__ == "__main__":
+#     flutter = Flutter()
+#     print("Racines sans forçage :", flutter.racines_sans_forcage())
+#     print("Vitesse critique :", flutter.vitesse_critique())
+#     flutter.tracer_frequences()
