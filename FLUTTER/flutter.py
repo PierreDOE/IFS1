@@ -3,23 +3,22 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 
 class Flutter:
-    def __init__(self):
-        # Paramètres donnés
-        self.rho = 1        # kg/m³
-        self.rho_s = 600    # kg/m³
-        self.CL_alpha = 2 * np.pi
-        self.CmF = 0.01
-        self.alpha0 = np.radians(5)
-        self.alphaL0 = np.radians(-3)
-        self.k_alpha = 9e4  # N.m/rad
-        self.k_z = 3e4      # N/m
-        self.U = 120        # m/s
-        self.J0 = 205       # kg.m²
-        self.a = 0.5        # m
-        self.m = 600        # kg
-        self.d = -0.2       # m
-        self.c = 2          # m
-        self.delta_b = 1    # m
+    def __init__(self, params):
+        self.rho = params["rho"]  # kg/m³
+        self.rho_s = params["rho_s"]  # kg/m³
+        self.CL_alpha = params["CL_alpha"]
+        self.CmF = params["CmF"]
+        self.alpha0 = params["alpha0"]
+        self.alphaL0 = params["alphaL0"]
+        self.k_alpha = params["k_alpha"]  # N.m/rad
+        self.k_z = params["k_z"]  # N/m
+        self.U = params["U"]  # m/s
+        self.J0 = params["J0"]  # kg.m²
+        self.a = params["a"]  # m
+        self.m = params["m"]  # kg
+        self.d = params["d"]  # m
+        self.c = params["c"]  # m
+        self.delta_b = params["delta_b"]  # m
 
         # Fréquences propres en torsion et flexion
         self.lambda_z = self.k_z / self.m
