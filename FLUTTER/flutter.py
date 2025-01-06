@@ -44,17 +44,18 @@ class Flutter:
         racines = np.roots(coeffs)
         return racines
 
-    def pulsation_sans_forçage(self):
+    def pulsation_sans_forcage(self):
         roots = self.racines_sans_forcage()
-        print(f"pulsation pour \u03BB_1\n\u03C9_11={roots[0]}\t\u03C9_12={-roots[0]}")
-        print(f"pulsation pour \u03BB_2\n\u03C9_21={roots[1]}\t\u03C9_22={-roots[1]}")
+        print(f"pulsation pour \u03BB_1\n\u03C9_11={np.sqrt(roots[0])}\t\u03C9_12={-np.sqrt(roots[0])}")
+        line()
+        print(f"pulsation pour \u03BB_2\n\u03C9_21={np.sqrt(roots[1])}\t\u03C9_22={-np.sqrt(roots[1])}")
 
-    def sans_forage(self):
+    def sans_forcage(self):
         _lambda = self.racines_sans_forcage()
         line()
         print(f"Racines sans forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
         line()
-        self.pulsation_sans_forçage()
+        self.pulsation_sans_forcage()
         line()
 
     def determinant_avec_forcage(self, U):
