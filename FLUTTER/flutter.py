@@ -1,7 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.optimize import fsolve
 from FLUTTER.tools import line
+from tabulate import tabulate
 
 class Flutter:
     def __init__(self, params):
@@ -55,6 +57,7 @@ class Flutter:
 
     def sans_forcage(self):
         _lambda = self.racines_sans_forcage()
+        roots = self.racines_sans_forcage()
         line()
         print(f"Racines sans forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
         line()
@@ -92,7 +95,6 @@ class Flutter:
     def pulsation_avec_forcage(self,U):
         """Fonction qui retourne les pulsations du mode avec forcage"""
         roots = self.racines_avec_forcage(U)
-        print(f"Racines pour U = {U}")
         print(f"Pulsation pour \u03BB_1\n\u03C9_11={np.sqrt(roots[0])}\t\u03C9_12={-np.sqrt(roots[0])}")
         line()
         print(f"Pulsation pour \u03BB_2\n\u03C9_21={np.sqrt(roots[1])}\t\u03C9_22={-np.sqrt(roots[1])}")
@@ -105,6 +107,7 @@ class Flutter:
         """Fonction qui affiche les racines et pulsation du système"""
         _lambda = self.racines_avec_forcage(U)
         line()
+        print(f"Racines pour U = {U}")
         print(f"Racines avec forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
         line()
         print(f"Decomposition de \u03BB_1 :\n Re(\u03BB_1)={np.real(_lambda[0])} et Im(\u03BB_1)={np.imag(_lambda[0])}")
@@ -159,22 +162,20 @@ class Flutter:
         TalphaM = (self.lambda_z - lambd) / (self.J0 * self.determinant_sans_forcage(lambd))
 
         plt.figure(1)
-        ax1 = plt.subplot(411)
+        ax1 = plt.subplot(311)
         plt.title('Diagrammes des fonctions de transfert')
-        plt.semilogy(f, np.abs(TzL), label='TzL')
+        plt.semilogy(f, np.abs(TzL),color='b',linewidth = 2, label=r'$T_{zl}$')
         plt.tick_params('x', labelbottom=False)
+        plt.legend()
         plt.grid()
-        plt.subplot(412, sharex=ax1)
-        plt.semilogy(f, np.abs(TalphaL), label='TalphaL')
+        plt.subplot(312, sharex=ax1)
+        plt.semilogy(f, np.abs(TalphaL),color='r',linewidth = 2, label=r'$T_{\alpha L}$')
         plt.tick_params('x', labelbottom=False)
         plt.ylabel('Module des fonctions de transfert')
+        plt.legend()
         plt.grid()
-        plt.subplot(413)
-        plt.semilogy(f, np.abs(TzM), label='TzM')
-        plt.tick_params('x', labelbottom=False)
-        plt.grid()
-        plt.subplot(414)
-        plt.semilogy(f, np.abs(TalphaM), label='TalphaM')
+        plt.subplot(313)
+        plt.semilogy(f, np.abs(TalphaM),color='g',linewidth = 2, label=r'$T_{\alpha M}$')
         plt.xlabel('Fréquence (Hz)')
         plt.grid()
         plt.legend()
@@ -188,4 +189,5 @@ class Flutter:
         self.avec_forcage(self.U_test)
         self.tracer_frequences()
         self.tracer_fonctions_transfert()
+
 
