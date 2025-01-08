@@ -22,7 +22,7 @@ class Flutter:
         self.delta_b = params["delta_b"]  # m
 
         # test
-        self.U_test = 100 # m/s
+        self.U_test = 116 # m/s
         # Fréquences propres en torsion et flexion
         self.lambda_z = self.k_z / self.m
         self.lambda_alpha = self.k_alpha / self.J0
@@ -92,6 +92,7 @@ class Flutter:
     def pulsation_avec_forcage(self,U):
         """Fonction qui retourne les pulsations du mode avec forcage"""
         roots = self.racines_avec_forcage(U)
+        print(f"Racines pour U = {U}")
         print(f"Pulsation pour \u03BB_1\n\u03C9_11={np.sqrt(roots[0])}\t\u03C9_12={-np.sqrt(roots[0])}")
         line()
         print(f"Pulsation pour \u03BB_2\n\u03C9_21={np.sqrt(roots[1])}\t\u03C9_22={-np.sqrt(roots[1])}")
@@ -184,7 +185,7 @@ class Flutter:
         # flutter = Flutter()
         self.sans_forcage()
         print("Vitesse critique :", self.vitesse_critique())
-        self.avec_forcage(self.U)
+        self.avec_forcage(self.U_test)
         self.tracer_frequences()
         self.tracer_fonctions_transfert()
 
