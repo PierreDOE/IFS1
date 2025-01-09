@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import fsolve
-from FLUTTER.tools import line
+from FLUTTER.tools import line, set_section
 from tabulate import tabulate
+
 
 class Flutter:
     def __init__(self, params):
@@ -57,8 +58,7 @@ class Flutter:
 
     def sans_forcage(self):
         _lambda = self.racines_sans_forcage()
-        roots = self.racines_sans_forcage()
-        line()
+        set_section('Résolution du système sans forçage :')
         print(f"Racines sans forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
         line()
         print(f"Decomposition de \u03BB_1 :\n Re(\u03BB_1)={np.real(_lambda[0])} et Im(\u03BB_1)={np.imag(_lambda[0])}")
@@ -66,6 +66,7 @@ class Flutter:
         print(f"Decomposition de \u03BB_2 :\n Re(\u03BB_2)={np.real(_lambda[1])} et Im(\u03BB_2)={np.imag(_lambda[1])}")
         line()
         self.pulsation_sans_forcage()
+        print(f"Vitesse critique sans forçage : {self.vitesse_critique()} m/s" )
         line()
 
     def determinant_avec_forcage(self, U):
@@ -106,8 +107,8 @@ class Flutter:
     def avec_forcage(self,U):
         """Fonction qui affiche les racines et pulsation du système"""
         _lambda = self.racines_avec_forcage(U)
-        line()
-        print(f"Racines pour U = {U}")
+        set_section('Résolution du système avec forçage :', color='RED')
+        print(f"Racines pour U = {U} m/s")
         print(f"Racines avec forçage :\n\u03BB_1={_lambda[0]} et \u03BB_2={_lambda[1]}")
         line()
         print(f"Decomposition de \u03BB_1 :\n Re(\u03BB_1)={np.real(_lambda[0])} et Im(\u03BB_1)={np.imag(_lambda[0])}")
@@ -185,9 +186,7 @@ class Flutter:
         """Showing the results"""
         # flutter = Flutter()
         self.sans_forcage()
-        print("Vitesse critique :", self.vitesse_critique())
+        print('\n' * 2)
         self.avec_forcage(self.U_test)
         self.tracer_frequences()
         self.tracer_fonctions_transfert()
-
-
